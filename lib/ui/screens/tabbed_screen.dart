@@ -16,10 +16,7 @@ class _TabbedScreenState extends State<TabbedScreen> {
     HomeScreen(),
     TrendingsScreen(),
     SubscriptionsScreen(),
-    Text(
-      'Index 3: Inbox',
-      style: optionStyle,
-    ),
+    InboxScreen(),
     Text(
       'Index 4: Library',
       style: optionStyle,

@@ -68,7 +68,7 @@ class MeTubeBottomNavigationBar extends StatelessWidget {
     return BottomNavigationBarItem(
       icon: Icon(Icons.inbox),
       title: Text(
-        'Home',
+        'Inbox',
         style: _tabTextStyle,
       ),
     );

@@ -8,10 +8,46 @@ class TabbedScreen extends StatefulWidget {
 }
 
 class _TabbedScreenState extends State<TabbedScreen> {
+  int _selectedTabIndex = 0;
+  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Index 0: Home',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 1: Trending',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: Subscriptions',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 3: Inbox',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 4: Library',
+      style: optionStyle,
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedTabIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MeTubeAppBar().getAppBar(),
+      bottomNavigationBar: MeTubeBottomNavigationBar(_selectedTabIndex, _onItemTapped),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedTabIndex),
+      ),
     );
   }
 }

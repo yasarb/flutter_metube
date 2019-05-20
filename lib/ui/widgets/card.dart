@@ -46,7 +46,7 @@ class MeTubeCard extends StatelessWidget {
       child: Column(
         children: <Widget>[
           _buildThumbnail(),
-          _buildInfo(),
+          _buildInfo(context),
         ],
       ),
     );
@@ -112,7 +112,9 @@ class MeTubeCard extends StatelessWidget {
     return imageUrls[rng.nextInt(imageUrls.length)];
   }
 
-  _buildInfo() {
+  _buildInfo(BuildContext context) {
+    var textWidth = MediaQuery.of(context).size.width * 0.7;
+
     var channelImage = Container(
       width: 45.0,
       height: 45.0,
@@ -124,8 +126,6 @@ class MeTubeCard extends StatelessWidget {
         ),
       ),
     );
-
-    // Image.asset('assets/images/channel.jpg');
 
     var info = Container(
       padding: EdgeInsets.only(
@@ -140,14 +140,24 @@ class MeTubeCard extends StatelessWidget {
           SizedBox(
             width: 10,
           ),
-          Container(
-            width: 310,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('How to make a thumbnail!', style: videoTitleStyle),
-                Text('PewDiePie - 1M views - 1 months ago', style: videoSubTitleStyle),
-              ],
+          Flexible(
+            child: Container(
+              width: textWidth,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'How to make a thumbnail!',
+                    style: videoTitleStyle,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    'PewDiePie - 1M views - 1 months ago',
+                    style: videoSubTitleStyle,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
           ),
         ],

@@ -14,14 +14,8 @@ class _TabbedScreenState extends State<TabbedScreen> {
 
   List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    Text(
-      'Index 1: Trending',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: Subscriptions',
-      style: optionStyle,
-    ),
+    TrendingsScreen(),
+    SubscriptionsScreen(),
     Text(
       'Index 3: Inbox',
       style: optionStyle,

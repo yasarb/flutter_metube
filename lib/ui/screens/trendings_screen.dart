@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 
 import 'package:metube/ui/widgets/widgets.dart';
 
-class HomeScreen extends StatefulWidget {
+class TrendingsScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _TrendingsScreenState createState() => _TrendingsScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _TrendingsScreenState extends State<TrendingsScreen> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: 5,
       itemBuilder: (context, position) {
-        return MeTubeCard('home', position: position);
+        return MeTubeCard('trendings', position: position);
       },
     );
   }

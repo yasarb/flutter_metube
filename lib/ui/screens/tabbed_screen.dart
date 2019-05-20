@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:metube/ui/screens/screens.dart';
 import 'package:metube/ui/widgets/widgets.dart';
 
 class TabbedScreen extends StatefulWidget {
@@ -11,11 +12,8 @@ class _TabbedScreenState extends State<TabbedScreen> {
   int _selectedTabIndex = 0;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
+  List<Widget> _widgetOptions = <Widget>[
+    HomeScreen(),
     Text(
       'Index 1: Trending',
       style: optionStyle,

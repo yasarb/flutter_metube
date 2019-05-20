@@ -1,9 +1,10 @@
-import 'package:meta/meta.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 enum PopMenuKey { notInterested, saveToWatchLater, saveToPlaylist, share, report }
 
 class MeTubeCard extends StatelessWidget {
+  final String tabKey;
   final int position;
   final String videoId;
   final String thumbnailUrl;
@@ -14,7 +15,8 @@ class MeTubeCard extends StatelessWidget {
   final String uploadedTime;
   final int durationInSec;
 
-  MeTubeCard({
+  MeTubeCard(
+    this.tabKey, {
     this.position,
     this.videoId,
     this.thumbnailUrl,
@@ -51,13 +53,7 @@ class MeTubeCard extends StatelessWidget {
   }
 
   Widget _buildThumbnail() {
-    var imageUrl = '';
-
-    if (this.position % 2 == 0) {
-      imageUrl = 'assets/images/thumbnail_1.png';
-    } else {
-      imageUrl = 'assets/images/thumbnail_2.jpg';
-    }
+    var imageUrl = getImageUrl();
 
     var thumbnailImage = Container(
       height: 232,
@@ -99,6 +95,21 @@ class MeTubeCard extends StatelessWidget {
         duration,
       ],
     );
+  }
+
+  String getImageUrl() {
+    String imageUrl = '';
+    var rng = new Random();
+    var imageUrls = [
+      'assets/images/thumbnail_1.png',
+      'assets/images/thumbnail_2.jpg',
+      'assets/images/thumbnail_3.jpg',
+      'assets/images/thumbnail_4.jpg',
+      'assets/images/thumbnail_5.jpg',
+      'assets/images/thumbnail_6.jpg'
+    ];
+
+    return imageUrls[rng.nextInt(imageUrls.length)];
   }
 
   _buildInfo() {

@@ -3,7 +3,16 @@ import 'package:uuid/uuid.dart';
 import 'package:metube/models/video_model.dart';
 
 class User {
-  final String _id;
+  static final String db_id = 'id';
+  static final String db_name = 'name';
+  static final String db_imageUrl = 'imageUrl';
+  static final String db_bannerUrl = 'bannerUrl';
+  static final String db_subscriberCount = 'subscriberCount';
+
+  // static final String db_videoList = 'videoList';
+  // static final String db_subscriptionList = 'subscriptionList';
+
+  int id;
   final String name;
   final String imageUrl;
   final String bannerUrl;
@@ -11,20 +20,44 @@ class User {
   final List<Video> videoList;
   final List<User> subscriptionList;
 
-  User(
+  User({
+    this.id,
     this.name,
     this.imageUrl,
     this.bannerUrl,
     this.subscriberCount,
     this.videoList,
     this.subscriptionList,
-  ) : this._id = (new Uuid()).v4();
+  });
+
+  User.fromMap(Map<String, dynamic> map)
+      : this(
+          id: map[db_id],
+          name: map[db_name],
+          imageUrl: map[db_imageUrl],
+          bannerUrl: map[db_bannerUrl],
+          subscriberCount: map[db_subscriberCount],
+        );
+
+  Map<String, dynamic> toMap() {
+    var map = <String, dynamic>{
+      db_name: this.name,
+      db_imageUrl: this.imageUrl,
+      db_bannerUrl: this.bannerUrl,
+      db_subscriberCount: this.subscriberCount,
+    };
+
+    if (id != null) {
+      map[db_id] = this.id;
+    }
+    return map;
+  }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is User &&
-          this._id == other._id &&
+          this.id == other.id &&
           this.name == other.name &&
           this.imageUrl == other.imageUrl &&
           this.bannerUrl == other.bannerUrl &&
@@ -34,7 +67,7 @@ class User {
 
   @override
   int get hashCode =>
-      this._id.hashCode ^
+      this.id.hashCode ^
       this.name.hashCode ^
       this.imageUrl.hashCode ^
       this.bannerUrl.hashCode ^

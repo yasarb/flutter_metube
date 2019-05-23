@@ -3,6 +3,7 @@ import 'package:uuid/uuid.dart';
 import 'package:metube/model/video_model.dart';
 
 class User {
+  static final String tableName = 'users';
   static final String db_id = 'id';
   static final String db_name = 'name';
   static final String db_imageUrl = 'imageUrl';
@@ -12,7 +13,7 @@ class User {
   // static final String db_videoList = 'videoList';
   // static final String db_subscriptionList = 'subscriptionList';
 
-  int id;
+  final int id;
   final String name;
   final String imageUrl;
   final String bannerUrl;
@@ -39,17 +40,15 @@ class User {
           subscriberCount: map[db_subscriberCount],
         );
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap({userId}) {
     var map = <String, dynamic>{
+      db_id: userId ?? this.id,
       db_name: this.name,
       db_imageUrl: this.imageUrl,
       db_bannerUrl: this.bannerUrl,
       db_subscriberCount: this.subscriberCount,
     };
 
-    if (id != null) {
-      map[db_id] = this.id;
-    }
     return map;
   }
 

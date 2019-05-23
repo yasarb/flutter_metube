@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 import 'package:metube/model/user_model.dart';
 
 class UserDatabase {
   static final UserDatabase _userDb = new UserDatabase._internal();
 
-  final String tableName = "users";
+  final String tableName = User.tableName;
   Database _db;
   bool didInit = false;
 
@@ -30,7 +31,7 @@ class UserDatabase {
     _db = await openDatabase(path, version: 1, onCreate: (Database db, int version) async {
       await db.execute("CREATE TABLE $tableName ("
           "${User.db_id} STRING PRIMARY KEY,"
-          "${User.db_name} TEXT,"
+          "${User.db_name} TEXT UNIQUE,"
           "${User.db_imageUrl} TEXT,"
           "${User.db_bannerUrl} TEXT,"
           "${User.db_subscriberCount} INTEGER"
@@ -41,7 +42,9 @@ class UserDatabase {
 
   Future<User> insert(User user) async {
     var db = await _getDb();
-    user.id = await db.insert(tableName, user.toMap());
+    var id = Uuid().v4();
+
+    await db.insert(tableName, user.toMap(userId: id));
     return user;
   }
 
@@ -70,17 +73,19 @@ class UserDatabase {
       userList.add(User.fromMap(entry));
     }
 
-    return null;
+    return userList;
   }
 
   /// Inserts or replaces the book.
   Future updateUser(User user) async {
-    //var db = await _getDb();
-    _db.update(tableName, user.toMap(), where: '${User.db_id} = ?', whereArgs: [user.id]);
+    var db = await _getDb();
+    return await db
+        .update(tableName, user.toMap(), where: '${User.db_id} = ?', whereArgs: [user.id]);
   }
 
   Future<int> delete(int id) async {
-    return await _db.delete(tableName, where: '${User.db_name} = ?', whereArgs: [id]);
+    var db = await _getDb();
+    return await db.delete(tableName, where: '${User.db_id} = ?', whereArgs: [id]);
   }
 
   Future close() async {

@@ -1,8 +1,8 @@
 import 'package:uuid/uuid.dart';
 
-import 'package:metube/models/user_model.dart';
-import 'package:metube/models/category_model.dart';
-import 'package:metube/models/comment_model.dart';
+import 'package:metube/model/user_model.dart';
+import 'package:metube/model/category_model.dart';
+import 'package:metube/model/comment_model.dart';
 
 class Video {
   final String _id;

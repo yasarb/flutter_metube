@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:metube/models/video_model.dart';
+import 'package:metube/model/video_model.dart';
 
 class Category {
   final String _id;

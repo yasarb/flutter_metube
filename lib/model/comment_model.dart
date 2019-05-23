@@ -1,6 +1,6 @@
 import 'package:uuid/uuid.dart';
 
-import 'package:metube/models/user_model.dart';
+import 'package:metube/model/user_model.dart';
 
 class Comment {
   final String _id;

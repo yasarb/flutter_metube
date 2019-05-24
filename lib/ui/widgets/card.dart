@@ -1,37 +1,18 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+import 'package:metube/model/model.dart';
+
 enum PopMenuKey { notInterested, saveToWatchLater, saveToPlaylist, share, report }
 
 class MeTubeCard extends StatelessWidget {
-  final String tabKey;
-  final int position;
-  final String videoId;
-  final String thumbnailUrl;
-  final String userPhotoUrl;
-  final String title;
-  final String channel;
-  final int viewerCount;
-  final String uploadedTime;
-  final int durationInSec;
+  final Video video;
 
-  MeTubeCard(
-    this.tabKey, {
-    this.position,
-    this.videoId,
-    this.thumbnailUrl,
-    this.userPhotoUrl,
-    this.title,
-    this.channel,
-    this.viewerCount,
-    this.uploadedTime,
-    this.durationInSec,
-  });
+  MeTubeCard(this.video);
 
   @override
   Widget build(BuildContext context) {
     var textWidth = MediaQuery.of(context).size.width * 0.7;
-    var imageUrl = getImageUrl();
 
     var durationText = Text(
       '5:56',
@@ -46,32 +27,18 @@ class MeTubeCard extends StatelessWidget {
       child: Column(
         children: <Widget>[
           _Thumbnail(
-            thumbnailImage: _ThumbnailImage(imageUrl: imageUrl),
+            thumbnailImage: _ThumbnailImage(imageUrl: video.thumbnailUrl),
             duration: _Duration(durationText: durationText),
           ),
           Stack(
             children: <Widget>[
-              _VideoCardInfo(),
+              _VideoCardInfo(video),
               _VideoCardPopupMenu(),
             ],
           ),
         ],
       ),
     );
-  }
-
-  String getImageUrl() {
-    var rng = new Random();
-    var imageUrls = [
-      'assets/images/thumbnail_1.png',
-      'assets/images/thumbnail_2.jpg',
-      'assets/images/thumbnail_3.jpg',
-      'assets/images/thumbnail_4.jpg',
-      'assets/images/thumbnail_5.jpg',
-      'assets/images/thumbnail_6.jpg'
-    ];
-
-    return imageUrls[rng.nextInt(imageUrls.length)];
   }
 }
 
@@ -117,7 +84,10 @@ class _VideoCardPopupMenu extends StatelessWidget {
 }
 
 class _ChannelImage extends StatelessWidget {
-  const _ChannelImage({
+  final Video video;
+
+  const _ChannelImage(
+    this.video, {
     Key key,
   }) : super(key: key);
 
@@ -130,7 +100,7 @@ class _ChannelImage extends StatelessWidget {
         shape: BoxShape.circle,
         image: new DecorationImage(
           fit: BoxFit.fill,
-          image: new AssetImage('assets/images/channel.jpg'),
+          image: new AssetImage(video.thumbnailUrl),
         ),
       ),
     );
@@ -138,7 +108,10 @@ class _ChannelImage extends StatelessWidget {
 }
 
 class _VideoCardInfo extends StatelessWidget {
-  const _VideoCardInfo({
+  final Video video;
+
+  const _VideoCardInfo(
+    this.video, {
     Key key,
   }) : super(key: key);
 
@@ -153,12 +126,12 @@ class _VideoCardInfo extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          _ChannelImage(),
+          _ChannelImage(video),
           SizedBox(
             width: 10,
           ),
           Flexible(
-            child: _VideoCardHeader(),
+            child: _VideoCardHeader(video),
           ),
         ],
       ),
@@ -179,7 +152,10 @@ class _VideoCardHeader extends StatelessWidget {
     fontSize: 14,
   );
 
-  const _VideoCardHeader({
+  final Video video;
+
+  const _VideoCardHeader(
+    this.video, {
     Key key,
   }) : super(key: key);
 
@@ -193,12 +169,12 @@ class _VideoCardHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'How to make a thumbnail!',
+            video.title,
             style: videoTitleStyle,
             overflow: TextOverflow.ellipsis,
           ),
           Text(
-            'PewDiePie - 1M views - 1 months ago',
+            video.description,
             style: videoSubTitleStyle,
             overflow: TextOverflow.ellipsis,
           ),

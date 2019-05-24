@@ -14,9 +14,9 @@ class _TabbedScreenState extends State<TabbedScreen> {
 
   List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    TrendingsScreen(),
-    SubscriptionsScreen(),
-    InboxScreen(),
+    //TODO TrendingsScreen(),
+    //TODO SubscriptionsScreen(),
+    //TODO InboxScreen(),
     Text(
       'Index 4: Library',
       style: optionStyle,

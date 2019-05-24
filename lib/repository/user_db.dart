@@ -61,13 +61,18 @@ class UserDatabase {
     return null;
   }
 
-  /// Get all books with ids, will return a list with all the books found
   Future<List<User>> getUsers(List<int> ids) async {
     List<User> userList = [];
-    var idsString = ids.map((it) => '"$it"').join(',');
+    List<Map> maps = [];
     var db = await _getDb();
-    List<Map> maps = await db
-        .query(tableName, columns: null, where: '${User.db_id} IN ?', whereArgs: [idsString]);
+
+    if (ids.length > 0) {
+      var idsString = ids.map((it) => '"$it"').join(',');
+      maps = await db
+          .query(tableName, columns: null, where: '${User.db_id} IN ?', whereArgs: [idsString]);
+    } else {
+      maps = await db.query(tableName, columns: null);
+    }
 
     for (var entry in maps) {
       userList.add(User.fromMap(entry));

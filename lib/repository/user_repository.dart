@@ -22,6 +22,10 @@ class UserRepository {
     return database.getUser(id);
   }
 
+  Future<List<User>> getAllUsers() async {
+    return await database.getUsers([]);
+  }
+
   Future getUsers(List<int> ids) async {
     return database.getUsers(ids);
   }

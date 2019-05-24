@@ -29,24 +29,27 @@ class VideoDatabase {
   Future _init() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "metube.db");
+    print('path: $path');
     _db = await openDatabase(path, version: 1, onCreate: (Database db, int version) async {
       await db.execute("CREATE TABLE $tableName ("
-          "${Video.db_id} STRING PRIMARY KEY,"
-          "${Video.db_title} TEXT,"
-          "${Video.db_thumbnailUrl} TEXT,"
-          "${Video.db_description} TEXT,"
-          "${Video.db_ownerId} TEXT,"
-          "${Video.db_uploadedAt} TEXT,"
-          "${Video.db_category} TEXT,"
-          "${Video.db_likeCount} INTEGER,"
-          "${Video.db_dislikeCount} INTEGER,"
-          "${Video.db_viewCount} INTEGER,"
-          "CONSTRAINT fk_owner"
-          "FOREIGN KEY (${Video.db_ownerId})"
-          "REFERENCES ${User.tableName}(${User.db_id})"
+          "${Video.db_id} STRING PRIMARY KEY, "
+          "${Video.db_title} TEXT, "
+          "${Video.db_thumbnailUrl} TEXT, "
+          "${Video.db_description} TEXT, "
+          "${Video.db_ownerId} TEXT, "
+          "${Video.db_uploadedAt} TEXT, "
+          "${Video.db_category} TEXT, "
+          "${Video.db_likeCount} INTEGER, "
+          "${Video.db_dislikeCount} INTEGER, "
+          "${Video.db_viewCount} INTEGER "
+          /*"CONSTRAINT fk_owner"
+          " FOREIGN KEY (${Video.db_ownerId})"
+          " REFERENCES ${User.tableName}(${User.db_id})"*/
           ")");
     });
     didInit = true;
+    _insertSampleVideos();
+    // todo remove this function call. Replace init function with a db file created beforehand
   }
 
   Future<Video> insert(Video video) async {
@@ -71,16 +74,22 @@ class VideoDatabase {
 
   Future<List<Video>> getVideos(List<int> ids) async {
     List<Video> videoList = [];
-    var idsString = ids.map((it) => '"$it"').join(',');
+    List<Map> maps;
     var db = await _getDb();
-    List<Map> maps = await db
-        .query(tableName, columns: null, where: '${Video.db_id} IN ?', whereArgs: [idsString]);
+
+    if (ids.length > 0) {
+      var idsString = ids.map((it) => '"$it"').join(',');
+      maps = await db
+          .query(tableName, columns: null, where: '${Video.db_id} IN ?', whereArgs: [idsString]);
+    } else {
+      maps = await db.query(tableName, columns: null);
+    }
 
     for (var entry in maps) {
       videoList.add(Video.fromMap(entry));
     }
 
-    return null;
+    return videoList;
   }
 
   Future updateVideo(Video video) async {
@@ -96,5 +105,31 @@ class VideoDatabase {
   Future close() async {
     var db = await _getDb();
     return db.close();
+  }
+
+  void _insertSampleVideos() {
+    Video video1 = Video(
+        id: '1',
+        title: 'salih reyizi paket yaptım',
+        thumbnailUrl: 'assets/images/thumbnail_1.jpg',
+        description: 'asdasdad',
+        ownerId: '72a79ef3-8c51-49f5-a6e4-f15065a9cc53',
+        likeCount: 100,
+        dislikeCount: 56,
+        viewCount: 12345);
+
+    insert(video1);
+
+    Video video2 = Video(
+        id: '2',
+        title: 'eniştemle delirmeceler',
+        thumbnailUrl: 'assets/images/thumbnail_2.jpg',
+        description: 'xxxxxxxxx',
+        ownerId: '25cfa527-3cf0-46a1-bec4-cb04817bb862',
+        likeCount: 533,
+        dislikeCount: 644,
+        viewCount: 8561);
+
+    insert(video2);
   }
 }

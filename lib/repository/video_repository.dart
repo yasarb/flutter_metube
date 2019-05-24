@@ -26,6 +26,10 @@ class VideoRepository {
     return await database.getVideos(ids);
   }
 
+  Future<List<Video>> getAllVideos() async {
+    return await database.getVideos([]);
+  }
+
   Future updateVideo(Video video) async {
     return await database.updateVideo(video);
   }
